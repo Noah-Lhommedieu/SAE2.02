@@ -57,6 +57,7 @@
     <Compile Include="Exceptions\Realisations\GestionTaverne\ExceptionNumeroTableInconnu.cs" />
     <Compile Include="Metier\Algorithmes\AlgorithmeManager.cs" />
     <Compile Include="Metier\Algorithmes\IAlgorithme.cs" />
+    <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeChacunSaTable.cs" />
     <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeExemple.cs" />
     <Compile Include="Metier\Tavernes\Fabriques\FabriqueClient.cs" />
     <Compile Include="Metier\Tavernes\Client.cs" />

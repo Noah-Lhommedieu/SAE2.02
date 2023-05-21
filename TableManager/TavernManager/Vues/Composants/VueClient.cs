@@ -63,7 +63,7 @@ namespace TavernManager.Vues.Composants
             this.ellipse.Height = 50;
             this.ellipse.Fill = Brushes.Black;
             this.ellipse.Stroke = this.ellipse.Fill;
-            this.ellipse.StrokeThickness = 2; 
+            this.ellipse.StrokeThickness = 2;
             this.vue.Children.Add(this.ellipse);
 
             //Création de la zone de texte

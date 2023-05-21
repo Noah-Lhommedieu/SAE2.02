@@ -285,8 +285,8 @@ namespace TavernManager.Vues
                         string message = "";
                         if (!vmClient.EstAvecCesAmis) message = vmClient.Identite + " n'est pas à la même table que ces amis";
                         if (vmClient.EstAvecUnEnnemis)
-                        {
-                            if (message != "") message += "\n";
+                            {
+                                if (message != "") message += "\n";
                             message += vmClient.Identite+" est à la même table qu'un de ces ennemis";
                         }
                         if(message != "")

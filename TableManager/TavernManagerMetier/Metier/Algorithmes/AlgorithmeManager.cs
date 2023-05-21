@@ -22,6 +22,7 @@ namespace TavernManagerMetier.Metier.Algorithmes
 
             //---- Lister ICI tous les algorithmes implémentés ----
             algorithmes.Add(new AlgorithmeExemple());
+            algorithmes.Add(new AlgorithmeChacunSaTable());
 
 
             return algorithmes;

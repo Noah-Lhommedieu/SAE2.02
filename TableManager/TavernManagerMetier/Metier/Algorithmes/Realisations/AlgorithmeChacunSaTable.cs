@@ -7,19 +7,19 @@ using TavernManagerMetier.Metier.Tavernes;
 
 namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
-    public class AlgorithmeExemple : IAlgorithme
+    public class AlgorithmeChacunSaTable : IAlgorithme
     {
-        public string Nom => "Exemple";
+        public string Nom => "Chacun sa table";
 
         public long TempsExecution => -1;
 
         public void Executer(Taverne taverne)
         {
-            taverne.AjouterTable();
-            taverne.AjouterTable();
-            for (int i=0;i<taverne.Clients.Count();i++)
+            
+            for (int i = 0; i < taverne.Clients.Count(); i++)
             {
-                taverne.AjouterClientTable(i, i % 2);
+                taverne.AjouterTable();
+                taverne.AjouterClientTable(i, i);
             }
         }
     }
