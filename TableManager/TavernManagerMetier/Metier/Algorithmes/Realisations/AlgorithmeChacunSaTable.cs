@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TavernManagerMetier.Metier.Algorithmes.Graphes;
 using TavernManagerMetier.Metier.Tavernes;
 
 namespace TavernManagerMetier.Metier.Algorithmes.Realisations
@@ -15,6 +16,7 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 
         public void Executer(Taverne taverne)
         {
+            Graphe graphe = new Graphe(taverne);
             
             for (int i = 0; i < taverne.Clients.Count(); i++)
             {

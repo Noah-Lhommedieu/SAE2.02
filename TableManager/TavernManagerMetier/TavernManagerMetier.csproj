@@ -56,6 +56,8 @@
     <Compile Include="Exceptions\Realisations\GestionTaverne\ExceptionNumeroClientInconnu.cs" />
     <Compile Include="Exceptions\Realisations\GestionTaverne\ExceptionNumeroTableInconnu.cs" />
     <Compile Include="Metier\Algorithmes\AlgorithmeManager.cs" />
+    <Compile Include="Metier\Algorithmes\Graphes\Graphe.cs" />
+    <Compile Include="Metier\Algorithmes\Graphes\Sommet.cs" />
     <Compile Include="Metier\Algorithmes\IAlgorithme.cs" />
     <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeChacunSaTable.cs" />
     <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeExemple.cs" />
@@ -66,7 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Metier\Tavernes\Table.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Metier\Ressources\Nom.txt" />
     <EmbeddedResource Include="Metier\Ressources\Prenom.txt" />
