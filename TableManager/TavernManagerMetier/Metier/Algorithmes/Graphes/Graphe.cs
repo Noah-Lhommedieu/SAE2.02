@@ -83,5 +83,6 @@ namespace TavernManagerMetier.Metier.Algorithmes.Graphes
             Sommet value;
             return sommets.TryGetValue(client,out Sommet sommet);
         }*/
+
     }
 }

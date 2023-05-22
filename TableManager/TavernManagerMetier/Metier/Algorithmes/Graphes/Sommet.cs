@@ -10,6 +10,7 @@ namespace TavernManagerMetier.Metier.Algorithmes.Graphes
     public class Sommet
     {
 
+        public int? Couleur { get; set; }
 
         int Nbclients;
         public int NbClients { get { return Nbclients; } set { Nbclients = value; } }

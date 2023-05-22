@@ -43,7 +43,7 @@ public class AlgorithmeColorationSA : IAlgorithme
             if (!placed)
             {
                 taverne.AjouterTable();
-                client.ChangerTable(tables.Last());   
+                client.Table.AjouterClient(client);  
             }
         }
     }
