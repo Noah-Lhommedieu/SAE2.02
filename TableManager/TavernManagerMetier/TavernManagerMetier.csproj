@@ -61,6 +61,7 @@
     <Compile Include="Metier\Algorithmes\IAlgorithme.cs" />
     <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeChacunSaTable.cs" />
     <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeExemple.cs" />
+    <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeWelshPowell.cs" />
     <Compile Include="Metier\Tavernes\Fabriques\FabriqueClient.cs" />
     <Compile Include="Metier\Tavernes\Client.cs" />
     <Compile Include="Metier\Tavernes\Fabriques\FabriqueTaverne.cs" />
