@@ -10,10 +10,19 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
     public class AlgorithmeWelshPowell : IAlgorithme
     {
-
+        /// <summary>
+        /// propriété pour le nom de l'algorithme
+        /// </summary>
         public string Nom => "Welsh Powell SA";
-
+        /// <summary>
+        /// propriété pour initialiser le temps d'execution à -1
+        /// </summary>
         public long TempsExecution => -1;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="taverne"></param>
         public void Executer(Taverne taverne)
             {
                 List<Client> clients = taverne.Clients.ToList();

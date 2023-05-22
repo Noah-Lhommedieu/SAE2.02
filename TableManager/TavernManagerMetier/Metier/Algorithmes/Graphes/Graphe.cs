@@ -11,11 +11,9 @@ namespace TavernManagerMetier.Metier.Algorithmes.Graphes
     {
         private Dictionary<Client, Sommet> sommets;
 
-        
-        internal List<Sommet> Sommets
-        {
-            get { return this.sommets.Values.ToList<Sommet>(); }
-        }
+
+        public List<Sommet> Sommets => this.sommets.Values.Distinct().ToList<Sommet>();
+
 
         public Graphe(Taverne taverne)
         {

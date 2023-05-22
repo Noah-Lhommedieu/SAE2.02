@@ -10,8 +10,13 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
     public class AlgorithmeChacunSaTable : IAlgorithme
     {
+        /// <summary>
+        /// propriété pour le nom de l'algorithme
+        /// </summary>
         public string Nom => "Chacun sa table";
-
+        /// <summary>
+        /// propriété pour initialiser le temps d'execution à -1
+        /// </summary>
         public long TempsExecution => -1;
 
         /// <summary>

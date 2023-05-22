@@ -10,8 +10,13 @@ using TavernManagerMetier.Metier.Tavernes;
 
 public class AlgorithmeColorationSA : IAlgorithme
 {
+    /// <summary>
+    /// propriété pour le nom de l'algorithme
+    /// </summary>
     public string Nom => "Coloration SA";
-
+    /// <summary>
+    /// propriété pour initialiser le temps d'execution à -1
+    /// </summary>
     public long TempsExecution => -1;
 
     public void Executer(Taverne taverne)
