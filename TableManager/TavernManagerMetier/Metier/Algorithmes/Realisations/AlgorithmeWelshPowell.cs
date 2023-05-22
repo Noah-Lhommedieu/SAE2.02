@@ -8,13 +8,13 @@ using TavernManagerMetier.Metier.Algorithmes.Graphes;
 
 namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
-    public class AlgorithmeWelshPowell : IAlgorithme;
+    public class AlgorithmeWelshPowell : IAlgorithme
     {
 
         public string Nom => "Welsh Powell SA";
 
         public long TempsExecution => -1;
-        public static void Execute(Taverne taverne)
+        public void Executer(Taverne taverne)
             {
                 List<Client> clients = taverne.Clients.ToList();
                 List<Table> tables = taverne.Tables.ToList();

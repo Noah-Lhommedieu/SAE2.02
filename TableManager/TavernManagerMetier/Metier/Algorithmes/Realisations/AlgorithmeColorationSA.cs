@@ -19,7 +19,7 @@ public class AlgorithmeColorationSA : IAlgorithme
         Graphe graphe = new Graphe(taverne);
 
         List<Table> tables = taverne.Tables.ToList();
-        List<Client> clients = taverne.Clients.ToList();
+        List<Client> clients = taverne.Clients.ToList(); 
         clients.Sort((c1, c2) => c1.Numero.CompareTo(c2.Numero));
 
         foreach (Client client in clients)
