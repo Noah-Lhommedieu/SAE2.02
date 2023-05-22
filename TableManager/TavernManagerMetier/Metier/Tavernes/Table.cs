@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TavernManagerMetier.Exceptions.Realisations.GestionDesTables;
+using TavernManagerMetier.Metier.Tavernes;
+
+
 
 namespace TavernManagerMetier.Metier.Tavernes
 {
