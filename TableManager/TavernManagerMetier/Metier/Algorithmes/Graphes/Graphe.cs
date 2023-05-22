@@ -9,46 +9,32 @@ namespace TavernManagerMetier.Metier.Algorithmes.Graphes
 {
     public class Graphe
     {
-        /// <summary>
-        /// dictionnaire sommet de type client
-        /// </summary>
         private Dictionary<Client, Sommet> sommets;
 
-        /// <summary>
-       /// Obtient une liste des sommets uniques de ce graphe
-        /// </summary>
-        public List<Sommet> Sommets => this.sommets.Values.Distinct().ToList<Sommet>();
-
-        /// <summary>
-        /// Constructeur de la classe Graphe qui initialise le graphe à partir d'une taverne
-        /// </summary>
-        /// <param name="taverne">La taverne pour initialiser le graphe</param>
+        public Dictionary<Client, Sommet> DicoSOMMET
+        {
+            get { return sommets; }
+        }
+        public List<Sommet> Sommets
+        {
+            get { return this.sommets.Values.Distinct().ToList<Sommet>(); }
+        }
         public Graphe(Taverne taverne)
         {
             sommets = new Dictionary<Client, Sommet>();
-
-            foreach (Client client in sommets.Keys)
+            foreach (Client client in taverne.Clients)
             {
-                sommets.Add(client, new Sommet());
+                this.AjouterSommet(client, new Sommet());
             }
-
-            foreach (Client client in sommets.Keys)
+            foreach (Client client in taverne.Clients)
             {
-                foreach(Client clients in client.Ennemis)
+                foreach (Client ennemie in client.Ennemis)
                 {
-                    this.AjouterArete(client, clients);
+                    this.AjouterArete(client, ennemie);
                 }
             }
-
         }
-
-        /// <summary>
-        /// Méthode permettant d'ajouter un sommet au graphe en associant un client à un sommet
-        /// Cette méthode est récursive et est utilisée pour ajouter tous les clients et leurs amis au graphe
-        /// </summary>
-        /// <param name="client">Le client à associer au sommet</param>
-        /// <param name="sommet">Le sommet auquel associer le client</param>
-        private void AjouterSommet(Client client, Sommet sommet)
+        public void AjouterSommet(Client client, Sommet sommet)
         {
             if (!this.sommets.ContainsKey(client))
             {
@@ -57,37 +43,14 @@ namespace TavernManagerMetier.Metier.Algorithmes.Graphes
                 foreach (Client ami in client.Amis) this.AjouterSommet(ami, sommet);
             }
         }
-
-        /// <summary>
-        /// Méthode permettant d'ajouter une arête entre deux clients dans le graphe
-        /// Cette méthode crée une relation entre les sommets correspondants aux clients
-        /// </summary>
-        /// <param name="client1">Le premier client de l'arête</param>
-        /// <param name="client2">Le deuxième client de l'arête</param>
-        public void AjouterArete(Client client1, Client client2)
+        private void AjouterArete(Client client, Client ennemi)
         {
-            Sommet sommetClient1 = GetSommet(client1);
-            Sommet sommetClient2 = GetSommet(client2);
-
-            if (sommetClient1 != null && sommetClient2 != null)
+            Sommet s = sommets[ennemi];
+            if (client != ennemi)
             {
-                sommetClient1.AjouterVoisin(sommetClient2);
-                sommetClient2.AjouterVoisin(sommetClient1);
+                if (!this.sommets[client].Voisin.Contains(s))
+                    this.sommets[client].AjouterVoisin(s);
             }
         }
-        
-        /// <summary>
-        /// méthode pour obtenir la valeur du sommet
-        /// </summary>
-        /// <param name="client">le client dont on va récuperer le sommet</param>
-        /// <returns></returns>
-        public Sommet GetSommet(Client client)
-        {
-
-            Sommet value;
-            sommets.TryGetValue(client,out value);
-            return value;
-        }
-
     }
 }
