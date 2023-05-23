@@ -67,12 +67,14 @@ namespace TavernManagerMetier.Metier.Algorithmes.Graphes
         {
             Sommet x = new Sommet();
             x.clientSommet = this.clientSommet;
+
             x.Voisin = this.voisins;
             x.Couleur = this.couleur;
             x.NbClients = this.NbClients;
             x.MaxVoisinColorier = this.maxVoisinColorier;
             
-            return x;
+            return x; 
+            //return this.MemberwiseClone();
         }
 
     }

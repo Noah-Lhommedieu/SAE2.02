@@ -42,6 +42,7 @@ namespace TavernManagerMetier.Metier.Tavernes
         /// Numéro du client dans la taverne
         /// </summary>
         public int Numero => numero;
+            
         private int numero;
 
 

@@ -59,13 +59,16 @@ namespace TavernManagerMetier.Metier.Tavernes
         /// <exception cref="ExceptionNumeroTableInconnu">Levée si la table n'existe pas</exception>
         public void AjouterClientTable(int numeroClient, int numeroTable)
         {
-            //On lève une exception si le numéro client n'a pas de sens
-            if (numeroClient < 0 || numeroClient > this.clients.Count || this.clients[numeroClient] == null) throw new ExceptionNumeroClientInconnu(numeroClient);
-            //On lève une exception si le numéro de table n'a pas de sens
-            if (numeroTable < 0 || numeroTable > this.tables.Count || this.tables[numeroTable] == null) throw new ExceptionNumeroTableInconnu(numeroTable);
+            // Vérifier si le numéro client est valide
+            if (numeroClient < 0 || numeroClient >= this.clients.Count || this.clients[numeroClient] == null)
+                throw new ExceptionNumeroClientInconnu(numeroClient);
 
-            //On change le client de table
+            // Vérifier si le numéro de table est valide
+            if (numeroTable < 0 || numeroTable >= this.tables.Count || this.tables[numeroTable] == null)
+                throw new ExceptionNumeroTableInconnu(numeroTable);
+
+            // Changer le client de table
             this.clients[numeroClient].ChangerTable(this.tables[numeroTable]);
-        } 
+        }
     }
 }

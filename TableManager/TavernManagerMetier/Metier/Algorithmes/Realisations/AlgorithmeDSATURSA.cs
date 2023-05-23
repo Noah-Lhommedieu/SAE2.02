@@ -9,7 +9,75 @@ using TavernManagerMetier.Metier.Tavernes;
 
 namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
-    public class AlgorithmeDSATURSA: IAlgorithme 
+
+    public class AlgorithmeDSATURSA : IAlgorithme
+    {
+        private long tempsExecution = -1;
+
+        public string Nom => "Dsatur SA";
+
+        public long TempsExecution => tempsExecution;
+
+        public void Executer(Taverne taverne)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            Graphe graphe = new Graphe(taverne);
+
+            List<Sommet> sommetsNonColories = graphe.Sommets.ToList();
+
+            while (sommetsNonColories.Any())
+            {
+                Sommet sommetChoisi = sommetsNonColories
+                    .OrderByDescending(s => s.Voisin.Count(v => v.Couleur != -1)) // Critère 1 : Le plus de voisins coloriés
+                    .ThenByDescending(s => s.Voisin.Count) // Critère 2 : Le plus de voisins
+                    .ThenBy(s => Guid.NewGuid()) // Critère 3 : Aléatoire
+                    .First();
+
+                HashSet<int> couleursVoisins = new HashSet<int>(
+                    sommetChoisi.Voisin
+                        .Where(v => v.Couleur != -1)
+                        .Select(v => v.Couleur));
+
+                int couleur = 0;
+                while (couleursVoisins.Contains(couleur))
+                {
+                    couleur++;
+                }
+
+                sommetChoisi.Couleur = couleur;
+                sommetsNonColories.Remove(sommetChoisi);
+            }
+
+            for (int i = 0; i <= graphe.Sommets.Max(s => s.Couleur); i++)
+            {
+                taverne.AjouterTable();
+            }
+
+            foreach (Client client in taverne.Clients)
+            {
+                Sommet sommetDuClient = graphe.DicoSOMMET[client];
+                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
+            }
+
+            sw.Stop();
+            tempsExecution = sw.ElapsedMilliseconds;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*public class AlgorithmeDSATURSA : IAlgorithme
     {
         private long tempsExecution = -1;
         /// <summary>
@@ -21,7 +89,7 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
         /// </summary>
         public long TempsExecution => tempsExecution;
 
-        
+
 
         public void Executer(Taverne taverne)
         {
@@ -44,20 +112,20 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
                 sommet.Couleur = -1;
             }
 
-
-
+            Sommet GAGNANT = new Sommet();
             while (ListSommets.Any(sommet => sommet.Couleur == -1))
             {
-                int voisinMax = 0;
                 int voisinCouleurMax = 0;
+                int voisinMax = 0;
                 int nbVoisin = 0;
-                List<Sommet> voisinDuSommet = new List<Sommet>();   
+                List<Sommet> voisinDuSommet = new List<Sommet>();
                 List<Sommet> EgaliteEntreSommet = new List<Sommet>();
-                Sommet GAGNANT = new Sommet();
+                
 
 
                 foreach (Sommet sommet in ListSommets)
                 {
+
                     nbVoisin = sommet.Voisin.Count; // Nombre de voisin du sommet
                     voisinDuSommet.Clear(); // Clear pour les futur voisin du nouveau sommet (foreach) listé dedans
                     for (int i = 0; i < nbVoisin; i++) // Pour tous les voisin du sommet
@@ -68,58 +136,49 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 
 
                     //On attribut a sommet actuel, le nombre de ses voisin qui possède une couleur
-                    sommet.MaxVoisinColorier = voisinDuSommet.Count(nbVoisinACouleur => nbVoisinACouleur.Couleur != -1); 
-                    
+                    sommet.MaxVoisinColorier = voisinDuSommet.Count(nbVoisinACouleur => nbVoisinACouleur.Couleur != -1);
+
                     // On vérifie que le sommet actuel possède plus de voisin colorié que le sommet précédent
-                    if (sommet.MaxVoisinColorier > voisinCouleurMax)
+                    if (sommet.MaxVoisinColorier > voisinCouleurMax) // LE CRITERE 1
                     {
-                       
                         // Si oui, on remplace la variable de nombre maximal de voisin colorié
                         voisinCouleurMax = sommet.MaxVoisinColorier;
                         // Puis on copie l'objet du sommet actuel pour le donner au nouveau (tout attribut propri compris)
                         GAGNANT = (Sommet)sommet.Clone();
-
-
                     }
+
+
                     // Si même nombre voisin colorié, if GAGNANT a plus de voisin que sommet
-                    else if (sommet. == voisinCouleurMax)
+                    else if (sommet.MaxVoisinColorier == voisinCouleurMax)
                     {
-                        // Si oui, on remplace la variable de nombre maximal de voisin colorié
-                        voisinCouleurMax = sommet.MaxVoisinColorier;
-                        // Puis on copie l'objet du sommet actuel pour le donner au nouveau (tout attribut propri compris)
-                        GAGNANT = (Sommet)sommet.Clone();
+                        // Si même nombre voisin colorié + Si même nombre voisin
+                        if (sommet.MaxVoisinColorier == voisinCouleurMax && sommet.Voisin.Count() == GAGNANT.Voisin.Count()) // LE CRITERE 3
+                        {
 
+                            // Ajouter sommet a liste EgaliteEntreSommet + choisir au hasard Random
+                            EgaliteEntreSommet.Add(sommet);
+                            //Randomize le feur
+                            Random random = new Random();
+                            int randomInt = random.Next(0, EgaliteEntreSommet.Count);
+                            GAGNANT = (Sommet)EgaliteEntreSommet[randomInt].Clone();
+                        }
+                        else // LE CRITERE 2
+                        {
+                            // Si oui, on remplace la variable de nombre maximal de voisin colorié
+                            voisinCouleurMax = sommet.MaxVoisinColorier;
+                            // Puis on copie l'objet du sommet actuel pour le donner au nouveau (tout attribut propri compris)
+                            GAGNANT = (Sommet)sommet.Clone();
+                        }
 
                     }
-                    // Si même nombre voisin colorié + Si même nombre voisin
-                    else if (sommet.MaxVoisinColorier == voisinCouleurMax && )
-                    {
-                        // Ajouter sommet a liste EgaliteEntreSommet + choisir au hasard Random
-                    }
-
-
-                    
-
-
-                    if (sommet.Voisin.Count > voisinMax)
-                    {
-                        voisinMax = sommet.Voisin.Count;
-
-
-                    }
-
 
                 }
 
 
 
-                
+
+
             }
-
-
-
-
-
 
             for (int i = 0; i <= CouleursSommets.Max(); i++)
             {
@@ -131,9 +190,35 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
                 Sommet sommetDuClient = graphe.DicoSOMMET[client];
                 taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
             }
-
             sw.Stop();
-            this.tempsExecution = sw.ElapsedMilliseconds;
-        }
-    }
+                this.tempsExecution = sw.ElapsedMilliseconds;
+            }
+        }*/
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ 
+                int plusPetiteCouleur = 0;
+                List<int> couleursVoisins = GAGNANT.Voisin.Where(v => v.Couleur != -1).Select(v => v.Couleur).ToList();
+
+                while (couleursVoisins.Contains(plusPetiteCouleur))
+                {
+                    plusPetiteCouleur++;
+                }
+
+                GAGNANT.Couleur = plusPetiteCouleur;
+                CouleursSommets.Add(plusPetiteCouleur);*/
