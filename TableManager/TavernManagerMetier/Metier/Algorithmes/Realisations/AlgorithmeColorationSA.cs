@@ -39,8 +39,9 @@ public class AlgorithmeColorationSA : IAlgorithme
         List<int> CouleursSommets = new List<int>();
         List<Sommet> ListSommets = new List<Sommet>();  
         int couleur = 0;
+
         foreach(Sommet sommet in graphe.Sommets)
-            {
+        {
             ListSommets.Add(sommet);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
     public class AlgorithmeLDOSA : IAlgorithme
     {
+        private long tempsExecution = -1;
         /// <summary>
         /// propriété pour le nom de l'algorithme
         /// </summary>
@@ -17,56 +19,72 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
         /// <summary>
         /// propriété pour initialiser le temps d'execution à -1
         /// </summary>
-        public long TempsExecution => -1;
+        public long TempsExecution => tempsExecution;
 
         public void Executer(Taverne taverne)
         {
-            List<Table> tables = taverne.Tables.ToList();
-            List<Client> clients = taverne.Clients.ToList();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            Graphe graphe = new Graphe(taverne);
 
-            // Trier les clients en fonction du nombre d'ennemis
-            clients.Sort((c1, c2) => c2.Ennemis.Count.CompareTo(c1.Ennemis.Count));
 
-            // Répartir les clients sur les tables en respectant les contraintes
-            foreach (Client client in clients)
+            List<int> CouleursSommets = new List<int>();
+            List<Sommet> ListSommets = new List<Sommet>();
+            int couleur = 0;
+
+            foreach (Sommet sommet in graphe.Sommets)
             {
-                Table table = GetTableWithFewestEnemies(client, tables);
-                table.AjouterClient(client);
+                ListSommets.Add(sommet);
             }
-        }
 
-        private Table GetTableWithFewestEnemies(Client client, List<Table> tables)
-        {
-            Table minTable = null;
-            int minEnemies = int.MaxValue;
+            ListSommets = ListSommets.OrderByDescending(m => m.Voisin.Count()).ToList();
 
-            foreach (Table table in tables)
+
+            foreach (Sommet sommet in ListSommets)
             {
-                int enemies = CountEnemiesAtTable(client, table);
+                sommet.Couleur = -1;
+            }
 
-                if (enemies < minEnemies)
+            foreach (Sommet sommet in ListSommets)
+            {
+                couleur = 0;
+                bool estEnnemi = false;
+                while (!estEnnemi)
                 {
-                    minTable = table;
-                    minEnemies = enemies;
+                    estEnnemi = true;
+                    foreach (Sommet voisin in sommet.Voisin)
+                    {
+                        if (voisin.Couleur == couleur)
+                        {
+                            estEnnemi = false;
+                        }
+                    }
+                    if (estEnnemi && sommet.Couleur == -1)
+                    {
+                        sommet.Couleur = couleur;
+                        CouleursSommets.Add(couleur);
+                    }
+                    else
+                    {
+                        couleur += 1;
+                    }
                 }
             }
 
-            return minTable;
-        }
-
-        private int CountEnemiesAtTable(Client client, Table table)
-        {
-            int count = 0;
-
-            foreach (Client otherClient in table.Clients)
+            for (int i = 0; i <= CouleursSommets.Max(); i++)
             {
-                if (client.EstEnnemisAvec(otherClient))
-                {
-                    count++;
-                }
+                taverne.AjouterTable();
             }
 
-            return count;
+            foreach (Client client in taverne.Clients)
+            {
+                Sommet sommetDuClient = graphe.DicoSOMMET[client];
+                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
+            }
+
+            sw.Stop();
+            this.tempsExecution = sw.ElapsedMilliseconds;
+
         }
     }
 }

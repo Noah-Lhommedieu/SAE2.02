@@ -7,9 +7,16 @@ using TavernManagerMetier.Metier.Tavernes;
 
 namespace TavernManagerMetier.Metier.Algorithmes.Graphes
 {
-    public class Sommet
+    public class Sommet : ICloneable
     {
 
+
+        private int maxVoisinColorier = 0;
+        public int MaxVoisinColorier
+        {
+            get { return maxVoisinColorier; }
+            set { maxVoisinColorier = value; }
+        }
         private int couleur;
         public int Couleur
         {
@@ -56,7 +63,17 @@ namespace TavernManagerMetier.Metier.Algorithmes.Graphes
         {
             return this.client;
         }
+        public object Clone()
+        {
+            Sommet x = new Sommet();
+            x.clientSommet = this.clientSommet;
+            x.Voisin = this.voisins;
+            x.Couleur = this.couleur;
+            x.NbClients = this.NbClients;
+            x.MaxVoisinColorier = this.maxVoisinColorier;
+            
+            return x;
+        }
 
-        
     }
 }
