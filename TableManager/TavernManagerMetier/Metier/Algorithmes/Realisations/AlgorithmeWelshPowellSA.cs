@@ -9,14 +9,14 @@ using System.Diagnostics;
 
 namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
-    public class AlgorithmeWelshPowell : IAlgorithme
+    public class AlgorithmeWelshPowellSA : IAlgorithme
     {
         private long tempsExecution = -1;
 
         /// <summary>
         /// propriété pour le nom de l'algorithme
         /// </summary>
-        public string Nom => "Welsh Powell Ami";
+        public string Nom => "Welsh Powell SA";
         /// <summary>
         /// propriété pour initialiser le temps d'execution à -1
         /// </summary>
@@ -56,7 +56,7 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
                     if (sommet.Couleur == -1 && sommet.Voisin.All(voisin => voisin.Couleur != couleur))
                     {
                         sommet.Couleur = couleur;
-
+                        
                     }
                 }
 

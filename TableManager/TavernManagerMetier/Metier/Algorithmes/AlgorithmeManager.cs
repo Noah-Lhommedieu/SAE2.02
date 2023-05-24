@@ -24,10 +24,12 @@ namespace TavernManagerMetier.Metier.Algorithmes
             algorithmes.Add(new AlgorithmeExemple());
             algorithmes.Add(new AlgorithmeChacunSaTable());
             algorithmes.Add(new AlgorithmeColorationSA());
-            algorithmes.Add(new AlgorithmeWelshPowell());
+            algorithmes.Add(new AlgorithmeWelshPowellSA());
             algorithmes.Add(new AlgorithmeLDOSA());
             algorithmes.Add(new AlgorithmeDSATURSA());
             algorithmes.Add(new AlgorithmeColoration());
+            algorithmes.Add(new AlgorithmeLDO());
+            algorithmes.Add(new AlgorithmeWelshPowell());
 
             return algorithmes;
         }

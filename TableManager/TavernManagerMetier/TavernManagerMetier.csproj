@@ -64,8 +64,9 @@
     <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeColorationSA.cs" />
     <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeDSATURSA.cs" />
     <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeExemple.cs" />
+    <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeLDO.cs" />
     <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeLDOSA.cs" />
-    <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeWelshPowell.cs" />
+    <Compile Include="Metier\Algorithmes\Realisations\AlgorithmeWelshPowellSA.cs" />
     <Compile Include="Metier\Tavernes\Fabriques\FabriqueClient.cs" />
     <Compile Include="Metier\Tavernes\Client.cs" />
     <Compile Include="Metier\Tavernes\Fabriques\FabriqueTaverne.cs" />
