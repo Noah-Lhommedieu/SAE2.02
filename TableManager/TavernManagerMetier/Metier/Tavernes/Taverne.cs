@@ -49,6 +49,12 @@ namespace TavernManagerMetier.Metier.Tavernes
         {
             this.tables.Add(new Table(this.capaciteTables,this.tables.Count));
         }
+        public Table AjouterTableAvecRetour()
+        {
+            Table table = new Table(this.capaciteTables, this.tables.Count);
+            this.tables.Add(table);
+            return table;
+        }
 
         /// <summary>
         /// Ajoute un client à une table

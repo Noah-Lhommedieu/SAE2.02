@@ -78,6 +78,16 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
             sw.Stop();
             this.tempsExecution = sw.ElapsedMilliseconds;
         }
+        private int GetNombreOccurrence(Dictionary<Sommet, int> sommetEtLeurCouleur, int couleur)
+        {
+            int occurrence = 0;
+            foreach (int numTable in sommetEtLeurCouleur.Values)
+            {
+                if (numTable == couleur)
+                    occurrence++;
+            }
+            return occurrence;
+        }
 
     }
 }

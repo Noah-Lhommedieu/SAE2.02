@@ -15,7 +15,140 @@ public class AlgorithmeColoration : IAlgorithme
 
     public long TempsExecution => tempsExecution;
 
+
     public void Executer(Taverne taverne)
+    {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        Graphe graphe = new Graphe(taverne);
+
+
+        List<int> CouleursSommets = new List<int>();
+        List<Sommet> ListSommets = new List<Sommet>();
+        int couleur = 0;
+
+        foreach (Sommet sommet in graphe.Sommets)
+        {
+            ListSommets.Add(sommet);
+        }
+
+        foreach (Sommet sommet in ListSommets)
+        {
+            sommet.Couleur = -1;
+        }
+
+        foreach (Sommet sommet in ListSommets)
+        {
+            couleur = 0;
+            bool estEnnemi = false;
+            while (!estEnnemi)
+            {
+                estEnnemi = true;
+                foreach (Sommet voisin in sommet.Voisin)
+                {
+                    if (voisin.Couleur == couleur)
+                    {
+                        estEnnemi = false;
+                    }
+                }
+                if (estEnnemi && sommet.Couleur == -1)
+                {
+                    sommet.Couleur = couleur;
+                    CouleursSommets.Add(couleur);                       
+                }
+                else
+                {
+                    couleur += 1;
+                }
+            }
+        }
+
+        for(int i = 0; i < taverne.Tables.Length; i++)
+        {
+            taverne.Tables[i].Couleur = CouleursSommets[i];
+        }
+
+        for (int i = 0; i <= CouleursSommets.Max(); i++)
+        {
+            taverne.AjouterTable();
+        }
+
+
+        foreach (Client client in taverne.Clients)
+        {
+            int tableClientNbActuel = 0;
+
+            Sommet sommetDuClient = graphe.DicoSOMMET[client];
+            tableClientNbActuel += sommetDuClient.NbClients;
+
+            // Recherche de la table associée à la couleur du sommet
+            Table table = taverne.Tables.FirstOrDefault(t => t.Couleur == sommetDuClient.Couleur);
+
+            if (table != null)
+            {
+                if (table.NombreClients + sommetDuClient.NbClients > taverne.CapactieTables)
+                {
+                    // Ajouter une nouvelle table et associer le client à la nouvelle table
+                    taverne.AjouterTable();
+                    taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
+                }
+                else
+                {
+                    // Ajouter le client à la table existante
+                    taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
+                }
+            }
+            else
+            {
+                // Aucune table associée trouvée, ajouter une nouvelle table et associer le client
+                taverne.AjouterTable();
+                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
+            }
+        }
+
+        sw.Stop();
+        this.tempsExecution = sw.ElapsedMilliseconds;
+
+    }
+    /*if(client.Table.Clients.Length + sommetDuClient.NbClients > client.Table.Capacite)
+            {
+                taverne.AjouterTable();
+                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur + 1);
+            }
+            else
+            {
+                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
+            }
+
+            if (taverne.Clients[client.Table.].Table.Clients.Length + sommetDuClient.NbClients > taverne.Clients[sommetDuClient.Couleur].Table.Capacite)
+            {
+                taverne.AjouterTable();
+                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur + 1);
+            }
+            else
+            {
+                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
+            }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*public void Executer(Taverne taverne)
     {
         Stopwatch sw = new Stopwatch();
         sw.Start();
@@ -79,7 +212,7 @@ public class AlgorithmeColoration : IAlgorithme
                 occurrence++;
         }
         return occurrence;
-    }
+    }*/
 }
 /*Code de lorenzo
 

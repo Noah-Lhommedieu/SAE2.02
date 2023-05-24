@@ -58,7 +58,20 @@ namespace TavernManagerMetier.Metier.Algorithmes.Graphes
             Voisin.Add(sommet);
 
         }
-        
+        public Table GetTableAssocie(Taverne taverne)
+        {
+            // Recherche de la table associée à la couleur du sommet
+            foreach (Table table in taverne.Tables)
+            {
+                if (table.Couleur == this.Couleur)
+                {
+                    return table;
+                }
+            }
+
+            return null; // Aucune table associée trouvée
+        }
+
         public Client GetClient()
         {
             return this.client;
