@@ -73,39 +73,35 @@ public class AlgorithmeColoration : IAlgorithme
             taverne.AjouterTable();
         }
 
-
+        
         foreach (Client client in taverne.Clients)
         {
-            int tableClientNbActuel = 0;
+            int TableClientNbActuel = 0;
 
             Sommet sommetDuClient = graphe.DicoSOMMET[client];
-            tableClientNbActuel += sommetDuClient.NbClients;
-
-            // Recherche de la table associée à la couleur du sommet
-            Table table = taverne.Tables.FirstOrDefault(t => t.Couleur == sommetDuClient.Couleur);
-
-            if (table != null)
+            TableClientNbActuel += sommetDuClient.NbClients;
+            try
             {
-                if (table.NombreClients + sommetDuClient.NbClients > taverne.CapactieTables)
-                {
-                    // Ajouter une nouvelle table et associer le client à la nouvelle table
-                    taverne.AjouterTable();
-                    taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
-                }
-                else
-                {
-                    // Ajouter le client à la table existante
-                    taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
-                }
-            }
-            else
-            {
-                // Aucune table associée trouvée, ajouter une nouvelle table et associer le client
-                taverne.AjouterTable();
+                Table table = sommetDuClient.GetTableAssocie(taverne);
+                int test = sommetDuClient.GetTableAssocie(taverne).NombreClients;
+                if (sommetDuClient.GetTableAssocie(taverne).NombreClients + sommetDuClient.NbClients > taverne.CapactieTables) // Si 
+                
                 taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
             }
-        }
+            catch
+            {
+                taverne.AjouterTable();
+                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur+1);
+            }
+            
+            /*if(client.Table.NombreClients > client.Table.Capacite)
+            {
+                
+            }*/
+            
 
+
+        }
         sw.Stop();
         this.tempsExecution = sw.ElapsedMilliseconds;
 
