@@ -26,7 +26,7 @@ namespace TavernManagerMetier.Metier.Tavernes
         /// </summary>
         public int Capacite => capacite;
         private int capacite;
-
+        public int Couleur { get; set; }
         /// <summary>
         /// Nombre de clients assis à la table
         /// </summary>
