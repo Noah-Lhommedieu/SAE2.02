@@ -66,23 +66,23 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
                 }
 
                 int couleur = 0;
-                
+
                 while (ListSommets.Any(sommet => sommet.Couleur == -1))
                 {
-                    
+
                     foreach (Sommet sommet in ListSommets)
                     {
 
-                            
-                            if ((sommet.Couleur == -1 && sommet.Voisin.All(voisin => voisin.Couleur != couleur)))
-                            {
-                                sommet.Couleur = couleur;
+
+                        if ((sommet.Couleur == -1 && sommet.Voisin.All(voisin => voisin.Couleur != couleur)))
+                        {
+                            sommet.Couleur = couleur;
 
 
-                            }
-                        
-                    }                   
-                    
+                        }
+
+                    }
+
                     if (ClientA1Table[couleur] + ListSommets[couleur].NbClients <= taverne.CapactieTables)
                     {
                         ClientA1Table[couleur] += ListSommets[couleur].NbClients;
@@ -91,10 +91,10 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
                     ClientA1Table.Add(0);
 
                     CouleursSommets.Add(couleur);
-                    
+
 
                 }
-                
+
 
 
                 for (int i = 0; i < CouleursSommets.Count; i++)

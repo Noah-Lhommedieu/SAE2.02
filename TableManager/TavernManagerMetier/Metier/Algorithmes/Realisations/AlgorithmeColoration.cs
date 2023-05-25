@@ -22,6 +22,7 @@ public class AlgorithmeColoration : IAlgorithme
 =======
 
 
+
     public void Executer(Taverne taverne)
     {
         Stopwatch sw = new Stopwatch();

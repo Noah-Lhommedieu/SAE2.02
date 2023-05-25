@@ -59,7 +59,7 @@ public class AlgorithmeLDO : IAlgorithme
                 sommetEtLeurCouleur[sommet] = -1;
             }
 
-            
+
 
             // Attribution des couleurs en fonction des contraintes de coloration croissante
             foreach (Sommet sommet in graphe.Sommets)
