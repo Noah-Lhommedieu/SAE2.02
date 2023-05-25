@@ -18,7 +18,7 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
         /// <summary>
         /// propriété pour le nom de l'algorithme
         /// </summary>
-        public string Nom => "UwU";
+        public string Nom => "Welsh Powell";
         /// <summary>
         /// propriété pour initialiser le temps d'execution à -1
         /// </summary>
