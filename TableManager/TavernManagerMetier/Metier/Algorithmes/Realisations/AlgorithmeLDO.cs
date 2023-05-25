@@ -8,11 +8,11 @@ using TavernManagerMetier.Metier.Tavernes;
 using TavernManagerMetier.Exceptions.Realisations.GestionDesTables;
 using System.Windows;
 
-public class AlgorithmeColoration : IAlgorithme
+public class AlgorithmeLDO : IAlgorithme
 {
     private long tempsExecution = -1;
 
-    public string Nom => "Coloration Amis";
+    public string Nom => "Coloration LDO";
 
     public long TempsExecution => tempsExecution;
     public void Executer(Taverne taverne)
@@ -46,13 +46,20 @@ public class AlgorithmeColoration : IAlgorithme
 
             List<int> ClientA1Table = new List<int>();
             ClientA1Table.Add(0);
+            List<Sommet> ListSommets = new List<Sommet>();
 
-
+            foreach (Sommet sommet in graphe.Sommets)
+            {
+                ListSommets.Add(sommet);
+            }
+            ListSommets = ListSommets.OrderByDescending(m => m.Voisin.Count()).ToList();
             // Initialisation des sommets avec une couleur
             foreach (Sommet sommet in graphe.Sommets)
             {
                 sommetEtLeurCouleur[sommet] = -1;
             }
+
+            
 
             // Attribution des couleurs en fonction des contraintes de coloration croissante
             foreach (Sommet sommet in graphe.Sommets)

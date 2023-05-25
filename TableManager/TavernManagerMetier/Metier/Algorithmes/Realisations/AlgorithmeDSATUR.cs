@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,62 +7,88 @@ using System.Text;
 using System.Threading.Tasks;
 using TavernManagerMetier.Metier.Algorithmes.Graphes;
 using TavernManagerMetier.Metier.Tavernes;
+using System.Net.Sockets;
 
 namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
 
-    public class AlgorithmeDSATURSA : IAlgorithme
+    public class AlgorithmeDSATUR : IAlgorithme
     {
         private long tempsExecution = -1;
 
-        public string Nom => "Dsatur SA";
+        public string Nom => "Dsatur";
 
         public long TempsExecution => tempsExecution;
-
         public void Executer(Taverne taverne)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            Graphe graphe = new Graphe(taverne);
-
-            List<Sommet> sommetsNonColories = graphe.Sommets.ToList();
-
-            while (sommetsNonColories.Any())
+            try
             {
-                Sommet sommetChoisi = sommetsNonColories
-                    .OrderByDescending(s => s.Voisin.Count(v => v.Couleur != -1)) // Critère 1 : Le plus de voisins coloriés
-                    .ThenByDescending(s => s.Voisin.Count) // Critère 2 : Le plus de voisins
-                    .ThenBy(s => Guid.NewGuid()) // Critère 3 : Aléatoire
-                    .First();
+                ExecuterAlgo(taverne);
+            }
+            catch (Exception ex)
+            {
+                this.tempsExecution = -1;
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void ExecuterAlgo(Taverne taverne)
+        {
+            try
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                Graphe graphe = new Graphe(taverne);
 
-                HashSet<int> couleursVoisins = new HashSet<int>(
-                    sommetChoisi.Voisin
-                        .Where(v => v.Couleur != -1)
-                        .Select(v => v.Couleur));
+                List<Sommet> sommetsNonColories = graphe.Sommets.ToList();
 
-                int couleur = 0;
-                while (couleursVoisins.Contains(couleur))
+                List<int> ClientA1Table = new List<int>();
+                ClientA1Table.Add(0);
+
+                while (sommetsNonColories.Any())
                 {
-                    couleur++;
+                    Sommet sommetChoisi = sommetsNonColories
+                        .OrderByDescending(s => s.Voisin.Count(v => v.Couleur != -1)) // Critère 1 : Le plus de voisins coloriés
+                        .ThenByDescending(s => s.Voisin.Count) // Critère 2 : Le plus de voisins
+                        .ThenBy(s => Guid.NewGuid()) // Critère 3 : Aléatoire
+                        .First();
+
+                    HashSet<int> couleursVoisins = new HashSet<int>(
+                        sommetChoisi.Voisin
+                            .Where(v => v.Couleur != -1)
+                            .Select(v => v.Couleur));
+
+                    int couleur = 0;
+                    Sommet save = sommetChoisi;
+                    while (couleursVoisins.Contains(couleur) || ClientA1Table[couleur] + save.NbClients > taverne.CapactieTables)
+                    {
+                        couleur++;
+                        ClientA1Table.Add(0);
+                    }
+                    
+                    sommetChoisi.Couleur = couleur;
+                    sommetsNonColories.Remove(sommetChoisi);
+                    ClientA1Table[couleur] += sommetChoisi.NbClients;
+
                 }
 
-                sommetChoisi.Couleur = couleur;
-                sommetsNonColories.Remove(sommetChoisi);
-            }
+                for (int i = 0; i <= graphe.Sommets.Max(s => s.Couleur); i++)
+                {
+                    taverne.AjouterTable();
+                }
 
-            for (int i = 0; i <= graphe.Sommets.Max(s => s.Couleur); i++)
+                foreach (Client client in taverne.Clients)
+                {
+                    Sommet sommetDuClient = graphe.DicoSOMMET[client];
+                    taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
+                }
+
+                sw.Stop();
+                tempsExecution = sw.ElapsedMilliseconds;
+            }
+            catch (Exception ex)
             {
-                taverne.AjouterTable();
+                throw ex;
             }
-
-            foreach (Client client in taverne.Clients)
-            {
-                Sommet sommetDuClient = graphe.DicoSOMMET[client];
-                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
-            }
-
-            sw.Stop();
-            tempsExecution = sw.ElapsedMilliseconds;
         }
     }
 

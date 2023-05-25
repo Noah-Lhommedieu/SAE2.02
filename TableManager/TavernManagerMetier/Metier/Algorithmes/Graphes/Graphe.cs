@@ -33,6 +33,18 @@ namespace TavernManagerMetier.Metier.Algorithmes.Graphes
                     this.AjouterArete(client, ennemie);
                 }
             }
+            foreach (Client client in taverne.Clients)
+            {
+                if (sommets[client].NbClients > taverne.CapactieTables)
+                {
+                    throw new Exception("Capacité de la table saturée par les amis.");
+                }
+
+                if (client.Ennemis.Any(c => this.sommets[c] == this.sommets[client]))
+                {
+                    throw new Exception("Taverne impossible.");
+                }
+            }
         }
         public void AjouterSommet(Client client, Sommet sommet)
         {

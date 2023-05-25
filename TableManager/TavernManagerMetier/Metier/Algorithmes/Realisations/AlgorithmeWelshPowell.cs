@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using TavernManagerMetier.Metier.Tavernes;
 using TavernManagerMetier.Metier.Algorithmes.Graphes;
 using System.Diagnostics;
+using System.Net.Sockets;
 
 namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
@@ -16,75 +18,107 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
         /// <summary>
         /// propriété pour le nom de l'algorithme
         /// </summary>
-        public string Nom => "Welsh Powell SA";
+        public string Nom => "UwU";
         /// <summary>
         /// propriété pour initialiser le temps d'execution à -1
         /// </summary>
         public long TempsExecution => tempsExecution;
-
+        public void Executer(Taverne taverne)
+        {
+            try
+            {
+                ExecuterAlgo(taverne);
+            }
+            catch (Exception ex)
+            {
+                this.tempsExecution = -1;
+                MessageBox.Show(ex.Message);
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="taverne"></param>
-        public void Executer(Taverne taverne)
+        public void ExecuterAlgo(Taverne taverne)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            Graphe graphe = new Graphe(taverne);
-
-            List<int> CouleursSommets = new List<int>();
-            List<Sommet> ListSommets = new List<Sommet>();
-
-            foreach (Sommet sommet in graphe.Sommets)
+            try
             {
-                ListSommets.Add(sommet);
-            }
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                Graphe graphe = new Graphe(taverne);
 
-            ListSommets = ListSommets.OrderByDescending(m => m.Voisin.Count()).ToList();
+                List<int> CouleursSommets = new List<int>();
+                List<Sommet> ListSommets = new List<Sommet>();
 
-            foreach (Sommet sommet in ListSommets)
-            {
-                sommet.Couleur = -1;
-            }
+                List<int> ClientA1Table = new List<int>();
+                ClientA1Table.Add(0);
 
-            int couleur = 0;
-
-            while (ListSommets.Any(sommet => sommet.Couleur == -1))
-            {
-                foreach (Sommet sommet in ListSommets)
+                foreach (Sommet sommet in graphe.Sommets)
                 {
-                    if (sommet.Couleur == -1 && sommet.Voisin.All(voisin => voisin.Couleur != couleur))
-                    {
-                        sommet.Couleur = couleur;
-                        
-                    }
+                    ListSommets.Add(sommet);
                 }
 
-                couleur++;
-                CouleursSommets.Add(couleur);
-            }
+                ListSommets = ListSommets.OrderByDescending(m => m.Voisin.Count()).ToList();
 
-            for (int i = 0; i < CouleursSommets.Count; i++)
+                foreach (Sommet sommet in ListSommets)
+                {
+                    sommet.Couleur = -1;
+                }
+
+                int couleur = 0;
+                
+                while (ListSommets.Any(sommet => sommet.Couleur == -1))
+                {
+                    
+                    foreach (Sommet sommet in ListSommets)
+                    {
+
+                            
+                            if ((sommet.Couleur == -1 && sommet.Voisin.All(voisin => voisin.Couleur != couleur)))
+                            {
+                                sommet.Couleur = couleur;
+
+
+                            }
+                        
+                    }                   
+                    
+                    if (ClientA1Table[couleur] + ListSommets[couleur].NbClients <= taverne.CapactieTables)
+                    {
+                        ClientA1Table[couleur] += ListSommets[couleur].NbClients;
+                    }
+                    couleur++;
+                    ClientA1Table.Add(0);
+
+                    CouleursSommets.Add(couleur);
+                    
+
+                }
+                
+
+
+                for (int i = 0; i < CouleursSommets.Count; i++)
+                {
+                    taverne.AjouterTable();
+                }
+
+                foreach (Client client in taverne.Clients)
+                {
+                    Sommet sommetDuClient = graphe.DicoSOMMET[client];
+                    taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
+                }
+
+                sw.Stop();
+                this.tempsExecution = sw.ElapsedMilliseconds;
+            }
+            catch (Exception ex)
             {
-                taverne.AjouterTable();
+                throw ex;
             }
-
-            foreach (Client client in taverne.Clients)
-            {
-                Sommet sommetDuClient = graphe.DicoSOMMET[client];
-                taverne.AjouterClientTable(client.Numero, sommetDuClient.Couleur);
-            }
-
-            sw.Stop();
-            this.tempsExecution = sw.ElapsedMilliseconds;
         }
 
     }
 }
-
-
-
-
 
 
 
@@ -113,4 +147,5 @@ foreach (Client client in clients)
 
     // Assigner le client à la table
     client.ChangerTable(table);*/
+
 
