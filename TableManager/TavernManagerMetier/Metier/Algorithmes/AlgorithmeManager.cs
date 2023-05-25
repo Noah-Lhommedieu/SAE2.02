@@ -27,7 +27,7 @@ namespace TavernManagerMetier.Metier.Algorithmes
             algorithmes.Add(new AlgorithmeColoration());
             algorithmes.Add(new AlgorithmeLDO());
             algorithmes.Add(new AlgorithmeWelshPowell());
-            algorithmes.Add(new AlgorithmeDsatur());
+            algorithmes.Add(new AlgorithmeDSATUR());
 
             return algorithmes;
         }
