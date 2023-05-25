@@ -69,34 +69,18 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 
                 while (ListSommets.Any(sommet => sommet.Couleur == -1))
                 {
-
                     foreach (Sommet sommet in ListSommets)
                     {
-
-
-                        if ((sommet.Couleur == -1 && sommet.Voisin.All(voisin => voisin.Couleur != couleur)))
+                        if ((sommet.Couleur == -1 && sommet.Voisin.All(voisin => voisin.Couleur != couleur)) && ClientA1Table[couleur] + sommet.NbClients <= taverne.CapactieTables)
                         {
                             sommet.Couleur = couleur;
-
-
+                            ClientA1Table[couleur] += sommet.NbClients;
                         }
-
-                    }
-
-                    if (ClientA1Table[couleur] + ListSommets[couleur].NbClients <= taverne.CapactieTables)
-                    {
-                        ClientA1Table[couleur] += ListSommets[couleur].NbClients;
                     }
                     couleur++;
                     ClientA1Table.Add(0);
-
                     CouleursSommets.Add(couleur);
-
-
                 }
-
-
-
                 for (int i = 0; i < CouleursSommets.Count; i++)
                 {
                     taverne.AjouterTable();
@@ -119,33 +103,4 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 
     }
 }
-
-
-
-
-
-
-
-/*List<Client> clients = taverne.Clients.ToList();
-List<Table> tables = taverne.Tables.ToList();
-int capacity = taverne.CapactieTables;
-
-// Trier les clients par ordre décroissant du nombre d'ennemis
-clients.Sort((c1, c2) => c2.Ennemis.Count.CompareTo(c1.Ennemis.Count));
-
-foreach (Client client in clients)
-{
-    // Rechercher une table avec suffisamment de places et sans ennemis
-    Table table = tables.FirstOrDefault(t => t.NombreClients < capacity && !t.Clients.Any(c => c.EstEnnemisAvec(client)));
-
-    // Si aucune table n'est trouvée, créer une nouvelle table
-    if (table == null)
-    {
-        table = new Table(capacity, tables.Count);
-        tables.Add(table);
-    }
-
-    // Assigner le client à la table
-    client.ChangerTable(table);*/
-
 
