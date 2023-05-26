@@ -12,9 +12,20 @@ public class AlgorithmeLDO : IAlgorithme
 {
     private long tempsExecution = -1;
 
+    /// <summary>
+    /// Nom de l'algorithme.
+    /// </summary>
     public string Nom => "Coloration LDO";
 
+    /// <summary>
+    /// Temps d'exécution de l'algorithme.
+    /// </summary>
     public long TempsExecution => tempsExecution;
+
+    /// <summary>
+    /// Exécute l'algorithme LDO sur une taverne donnée.
+    /// </summary>
+    /// <param name="taverne">La taverne sur laquelle appliquer l'algorithme.</param>
     public void Executer(Taverne taverne)
     {
         try
@@ -28,18 +39,19 @@ public class AlgorithmeLDO : IAlgorithme
         }
     }
 
-    public void ExecuterAlgo(Taverne taverne)
+    /// <summary>
+    /// Exécute l'algorithme LDO sur une taverne donnée.
+    /// </summary>
+    /// <param name="taverne">La taverne sur laquelle appliquer l'algorithme.</param>
+    private void ExecuterAlgo(Taverne taverne)
     {
         try
         {
-
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
             // Création du graphe à partir de la taverne
             Graphe graphe = new Graphe(taverne);
-
-            // Tri (pas de tri ici car on prend l'ordre dans lequel on donne)
 
             // Dictionnaire qui associe un Sommet à sa couleur
             Dictionary<Sommet, int> sommetEtLeurCouleur = new Dictionary<Sommet, int>();
@@ -52,14 +64,14 @@ public class AlgorithmeLDO : IAlgorithme
             {
                 ListSommets.Add(sommet);
             }
+            // Tri des sommets dans l'ordre décroissant du nombre de voisins
             ListSommets = ListSommets.OrderByDescending(m => m.Voisin.Count()).ToList();
+
             // Initialisation des sommets avec une couleur
             foreach (Sommet sommet in graphe.Sommets)
             {
                 sommetEtLeurCouleur[sommet] = -1;
             }
-
-
 
             // Attribution des couleurs en fonction des contraintes de coloration croissante
             foreach (Sommet sommet in graphe.Sommets)
@@ -80,7 +92,6 @@ public class AlgorithmeLDO : IAlgorithme
 
                 sommetEtLeurCouleur[sommet] = couleur;
                 ClientA1Table[couleur] += sommet.NbClients;
-
             }
 
             // Ajout des tables en fonction du nombre de couleurs utilisées

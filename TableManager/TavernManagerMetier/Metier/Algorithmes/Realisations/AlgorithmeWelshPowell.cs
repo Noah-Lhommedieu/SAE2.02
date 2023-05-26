@@ -11,18 +11,27 @@ using System.Net.Sockets;
 
 namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 {
+    /// <summary>
+    /// Implémentation de l'algorithme Welsh-Powell pour la coloration de graphes.
+    /// </summary>
     public class AlgorithmeWelshPowell : IAlgorithme
     {
         private long tempsExecution = -1;
 
         /// <summary>
-        /// propriété pour le nom de l'algorithme
+        /// Nom de l'algorithme.
         /// </summary>
-        public string Nom => "UwU";
+        public string Nom => "WelshPowell";
+
         /// <summary>
-        /// propriété pour initialiser le temps d'execution à -1
+        /// Temps d'exécution de l'algorithme.
         /// </summary>
         public long TempsExecution => tempsExecution;
+
+        /// <summary>
+        /// Exécute l'algorithme Welsh-Powell sur une taverne donnée.
+        /// </summary>
+        /// <param name="taverne">La taverne sur laquelle appliquer l'algorithme.</param>
         public void Executer(Taverne taverne)
         {
             try
@@ -35,11 +44,12 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
                 MessageBox.Show(ex.Message);
             }
         }
+
         /// <summary>
-        /// 
+        /// Exécute l'algorithme Welsh-Powell sur une taverne donnée.
         /// </summary>
-        /// <param name="taverne"></param>
-        public void ExecuterAlgo(Taverne taverne)
+        /// <param name="taverne">La taverne sur laquelle appliquer l'algorithme.</param>
+        private void ExecuterAlgo(Taverne taverne)
         {
             try
             {
@@ -58,6 +68,7 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
                     ListSommets.Add(sommet);
                 }
 
+                // Tri des sommets dans l'ordre décroissant du nombre de voisins
                 ListSommets = ListSommets.OrderByDescending(m => m.Voisin.Count()).ToList();
 
                 foreach (Sommet sommet in ListSommets)
@@ -67,10 +78,12 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
 
                 int couleur = 0;
 
+                // Attribution des couleurs aux sommets
                 while (ListSommets.Any(sommet => sommet.Couleur == -1))
                 {
                     foreach (Sommet sommet in ListSommets)
                     {
+                        // Vérification si le sommet peut être attribué à la couleur actuelle
                         if ((sommet.Couleur == -1 && sommet.Voisin.All(voisin => voisin.Couleur != couleur)) && ClientA1Table[couleur] + sommet.NbClients <= taverne.CapactieTables)
                         {
                             sommet.Couleur = couleur;
@@ -81,11 +94,14 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
                     ClientA1Table.Add(0);
                     CouleursSommets.Add(couleur);
                 }
+
+                // Ajout des tables à la taverne selon le nombre de couleurs utilisées
                 for (int i = 0; i < CouleursSommets.Count; i++)
                 {
                     taverne.AjouterTable();
                 }
 
+                // Attribution des clients aux tables en fonction de la couleur de leur sommet correspondant
                 foreach (Client client in taverne.Clients)
                 {
                     Sommet sommetDuClient = graphe.DicoSOMMET[client];
@@ -100,7 +116,5 @@ namespace TavernManagerMetier.Metier.Algorithmes.Realisations
                 throw ex;
             }
         }
-
     }
 }
-
